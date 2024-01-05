@@ -68,3 +68,34 @@ class FileStorage:
     def close(self):
         """call reload() method for deserializing the JSON file to objects"""
         self.reload()
+
+    def get(self, cls, id):
+        """
+        The `get` method retrieves one object, base on class and id.
+
+        Args:
+            cls (class): A class.
+            id (str): A string representing the objec ID.
+
+        Returns:
+            object: The retrieved object or None if not found.
+        """
+        table_name = cls.__tablename__
+
+        result = self.all(f"SELECT * FROM {table_name} WHERE id = :id", {'id': id})
+        return result.first() if result else None
+
+    def count(self, cls=None):
+        """
+        Count the number of objects in storage.
+
+        Args:
+            cls (class, optional): The class to filter objects. Default is None.
+
+        Returns:
+            int: The number of objects in storage.
+        """
+        table_name = cls.__tablename__
+
+        result = self.all(f"SELECT COUNT(*) FROM {table_name}")
+        return result.scalar() if result else 0
