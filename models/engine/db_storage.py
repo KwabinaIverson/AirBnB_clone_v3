@@ -86,11 +86,10 @@ class DBStorage:
         Return:
             object: The retrieved object or None if not found.
         """
-        # Derive the table name dynamically
-        table_name = cls.__tablename__
-
-        result = self.all(F"SELECT * FROM {table_name} WHERE id = :id", {'id': id})
-        return result.first() if result else None
+        obj = None
+        if cls is not None and issubclass(cls, BaseModel):
+            obj = self.__session.query(cls).filter(cls.id == id).first()
+        return obj
 
     def count(self, cls=None):
         """
@@ -102,7 +101,4 @@ class DBStorage:
         Returns:
             int: The number of objects in storage.
         """
-        table_name = cls.__tablename__
-
-        result = self.all(F"SELECT COUNT(*) FROM {table_name}")
-        return result.scalar() if result else 0
+        return len(self.all(cls))
