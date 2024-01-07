@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """First endpoint (route) will be to return the status of your API"""
 
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
 import os
@@ -15,6 +15,12 @@ app.register_blueprint(app_views, url_prefix="/api/v1")
 def teardown_flask(exception):
     """The Flask app context and event listener. Closes storage."""
     storage.close()
+
+@app.errorhandler(404)
+def error_404(error):
+    """ Handles 404 erros. """
+    msg = 'Not found'
+    return jsonify(error=msg), 404
 
 if __name__ == '__main__':
     app_host = os.getenv('HBNB_API_HOST', '0.0.0.0')
