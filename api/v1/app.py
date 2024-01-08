@@ -11,16 +11,19 @@ app = Flask(__name__)
 # Register blueprint
 app.register_blueprint(app_views, url_prefix="/api/v1")
 
+
 @app.teardown_appcontext
 def teardown_flask(exception):
     """The Flask app context and event listener. Closes storage."""
     storage.close()
+
 
 @app.errorhandler(404)
 def error_404(error):
     """ Handles 404 erros. """
     msg = 'Not found'
     return jsonify(error=msg), 404
+
 
 if __name__ == '__main__':
     app_host = os.getenv('HBNB_API_HOST', '0.0.0.0')
