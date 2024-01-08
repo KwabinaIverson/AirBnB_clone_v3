@@ -113,3 +113,55 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get_instance(self):
+        """Test that get returns the correct instance if in storage."""
+        storage = FileStorage()
+        instance = BaseModel()
+        storage.new(instance)
+        result = storage.get(BaseModel, instance.id)
+        self.assertEqual(result, instance)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get_nonexistent_instance(self):
+        """Test that get returns None for nonexistent instance."""
+        storage = FileStorage()
+        result = storage.get(BaseModel, "nonexistent_id")
+        r3 = storage.get(User, "nonexistent_id")
+        self.assertIsNone(result)
+        self.assertIsNone(r3)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count_class_instances(self):
+        """Test that count returns the correct number of existing class instances.
+        """
+        self.storage = FileStorage()
+        for _ in range(2):
+            self.storage.new(BaseModel())
+        count = self.storage.count(BaseModel)
+        self.assertEqual(count, 3)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count_no_instances(self):
+        """Test that count return 1 if no new instance of class is added to storage.
+        """
+        self.storage = FileStorage()
+        count = self.storage.count(User)
+        self.assertEqual(count, 1)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count_all_instances(self):
+        """Test that count returns the correct count of all instances."""
+        self.storage = FileStorage()
+        count = self.storage.count()
+        self.assertEqual(count, 7)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_delete_existing_instance(self):
+        """Test that delete removes an existing instance from __objects."""
+        self.storage = FileStorage()
+        instance = BaseModel()
+        self.storage.new(instance)
+        self.storage.delete(instance)
+        self.assertIsNone(self.storage.get(BaseModel, instance.id))
