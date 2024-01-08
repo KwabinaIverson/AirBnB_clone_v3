@@ -96,7 +96,8 @@ class DBStorage:
         Count the number of objects in storage.
 
         Args:
-            cls (class, optional): The class to filter objects. Default is None.
+            cls (class, optional):
+            The class to filter objects. Default is None.
 
         Returns:
             int: The number of objects in storage.
