@@ -37,7 +37,7 @@ class FileStorage:
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
         if obj is not None:
-            key = obj.__class__.__name__ + "." + obj.id
+            key = str(obj.__class__.__name__) + "." + str(obj.id)
             self.__objects[key] = obj
 
     def save(self):
@@ -61,14 +61,20 @@ class FileStorage:
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
         if obj is not None:
-            key = f"{obj.__class__.__name__}.{obj.id}"
+            key = str(obj.__class__.__name__) + '.' + str(obj.id)
             FileStorage.__objects.pop(key, None)
             self.save()
 
     def get(self, cls, id):
         """A method to retrieve one object."""
-        key = f"{cls.__name__}.{id}"
-        return self.__objects.get(key)
+        obj = None
+        try:
+            for val in self.__objects.values():
+                if val.id == id:
+                    obj = val
+        except BaseException:
+            pass
+        return obj
 
     def count(self, cls=None):
         """Return the count of objects of class."""
