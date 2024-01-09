@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""First endpoint (route) will be to return the status of your API"""
+"""
+    First endpoint (route) will be to return the status of your API
+"""
 
 from flask import Flask, jsonify, make_response
 from models import storage
