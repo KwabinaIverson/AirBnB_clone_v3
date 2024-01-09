@@ -134,7 +134,8 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_count_class_instances(self):
-        """Test that count returns the correct number of existing class instances.
+        """Test that count returns the correct
+           number of existing class instances.
         """
         self.storage = FileStorage()
         for _ in range(2):
@@ -144,7 +145,8 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_count_no_instances(self):
-        """Test that count return 1 if no new instance of class is added to storage.
+        """Test that count return 1 if no
+           new instance of class is added to storage.
         """
         self.storage = FileStorage()
         count = self.storage.count(User)

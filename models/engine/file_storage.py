@@ -56,44 +56,31 @@ class FileStorage:
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Error reloading data: {e}")
 
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
         if obj is not None:
-            key = obj.__class__.__name__ + '.' + obj.id
-            if key in self.__objects:
-                del self.__objects[key]
+            key = f"{obj.__class__.__name__}.{obj.id}"
+            FileStorage.__objects.pop(key, None)
+            self.save()
+
+    def get(self, cls, id):
+        """A method to retrieve one object."""
+        key = f"{cls.__name__}.{id}"
+        return self.__objects.get(key)
+
+    def count(self, cls=None):
+        """Return the count of objects of class."""
+        count = 0
+        if cls is not None:
+            for k in self.__objects.keys():
+                if cls.__name__ in k:
+                    count += 1
+        else:
+            count = len(self.__objects)
+        return count
 
     def close(self):
         """call reload() method for deserializing the JSON file to objects"""
         self.reload()
-
-    def get(self, cls, id):
-        """
-        The `get` method retrieves one object, base on class and id.
-
-        Args:
-            cls (class): A class.
-            id (str): A string representing the objec ID.
-
-        Returns:
-            object: The retrieved object or None if not found.
-        """
-        obj = None
-        if cls is not None and issubclass(cls, BaseModel):
-            obj = self.__session.query(cls).filter(cls.id == id).first()
-        return obj
-
-    def count(self, cls=None):
-        """
-        Count the number of objects in storage.
-
-        Args:
-            cls (class, optional):
-            The class to filter objects. Default is None.
-
-        Returns:
-            int: The number of objects in storage.
-        """
-        return len(self.all(cls))
