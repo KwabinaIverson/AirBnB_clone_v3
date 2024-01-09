@@ -49,7 +49,7 @@ def create_place(city_id):
     """Creates new Place obj tied to City obj.
        Return JSON representation of new obj.
     """
-    city = storage.all(City, city_id)
+    city = storage.get(City, city_id)
     if city is None:
         abort(404)
 
