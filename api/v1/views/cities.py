@@ -10,7 +10,8 @@ from models.city import City
 from werkzeug.exceptions import NotFound, MethodNotAllowed, BadRequest
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['GET'],
+                 strict_slashes=False)
 def get_cities_by_state(state_id):
     """
     Retrieves the list of all City objects of a State.
@@ -74,7 +75,8 @@ def delete_city(city_id):
     return jsonify({}), 200
 
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['POST'],
+                 strict_slashes=False)
 def create_city(state_id):
     """
     Creates a City object.
