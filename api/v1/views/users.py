@@ -12,7 +12,9 @@ from models.user import User
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
 def get_users():
-    """Gets all User objects. Return objects in JSON."""
+    """
+       Gets all User objects. Return objects in JSON.
+    """
     users = storage.all(User)
     user_js = [user.to_dict() for user in users.values()]
     return jsonify(user_js)
@@ -20,7 +22,9 @@ def get_users():
 
 @app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
 def get_user(user_id):
-    """Return User obj with id == user_id."""
+    """
+       Return User obj with id == user_id.
+    """
     user = storage.get(User, user_id)
     if user is None:
         abort(404)
@@ -29,7 +33,9 @@ def get_user(user_id):
 
 @app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)
 def del_user(user_id):
-    """Removes User obj from storage."""
+    """
+       Removes User obj from storage.
+    """
     user = storage.get(User, user_id)
     if user is None:
         abort(404)
@@ -40,7 +46,9 @@ def del_user(user_id):
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def create_user():
-    """Creates new User obj. Return JSON representation of new obj."""
+    """
+        Creates new User obj. Return JSON representation of new obj.
+    """
     data = request.get_json()
     if data is None:
         abort(400, description="Not a JSON")
@@ -56,7 +64,9 @@ def create_user():
 
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
 def update_user(user_id):
-    """Updates User obj wit id == user_id."""
+    """
+       Updates User obj wit id == user_id.
+    """
     user = storage.get(User, user_id)
     if user is None:
         abort(404)
