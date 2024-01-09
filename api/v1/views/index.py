@@ -1,35 +1,32 @@
 #!/usr/bin/python3
-""" The views for the API """
-
-from api.v1.views import app_views
+"""
+    Index view for API.
+    Holds status and stats functions.
+"""
 from flask import jsonify
-from models.amenity import Amenity
+from models import storage
+from . import app_views
+from models.state import State
 from models.city import City
 from models.place import Place
 from models.review import Review
-from models.state import State
+from models.amenity import Amenity
 from models.user import User
-from models import storage
 
-
-@app_views.route('/status', methods=['GET'], strict_slashes=False)
-def get_status():
-    """Gets status code of the API."""
+@app_views.route('/status', methods=['GET'])
+def status():
+    """Return OK status. Format == JSON."""
     return jsonify({"status": "OK"})
 
-
-@app_views.route('/stats', methods=['GET'], strict_slashes=False)
-def get_stats():
-    """Retrieves the number of each objects by type"""
-    objs = {
-        'amenities': Amenity,
-        'cities': City,
-        'places': Place,
-        'reviews': Review,
-        'states': State,
-        'users': User
+@app_views.route('/stats', methods=['GET'])
+def stats():
+    """Retrieves the number of each objects by type."""
+    stats = {
+        "amenities": storage.count(Amenity),
+        "cities": storage.count(City),
+        "places": storage.count(Place),
+        "reviews": storage.count(Review),
+        "states": storage.count(State),
+        "users": storage.count(User)
     }
-
-    for key, value in objs.items():
-        objs[key] = storage.count(value)
-    return jsonify(objs)
+    return jsonify(stats)
