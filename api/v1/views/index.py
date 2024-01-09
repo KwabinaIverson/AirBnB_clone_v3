@@ -13,10 +13,12 @@ from models.review import Review
 from models.amenity import Amenity
 from models.user import User
 
+
 @app_views.route('/status', methods=['GET'])
 def status():
     """Return OK status. Format == JSON."""
     return jsonify({"status": "OK"})
+
 
 @app_views.route('/stats', methods=['GET'])
 def stats():
