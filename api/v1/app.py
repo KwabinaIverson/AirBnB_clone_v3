@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """First endpoint (route) will be to return the status of your API"""
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
 import os
@@ -22,7 +22,7 @@ def teardown_flask(exception):
 def error_404(error):
     """ Handles 404 erros. """
     msg = 'Not found'
-    return jsonify(error=msg), 404
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 if __name__ == '__main__':
