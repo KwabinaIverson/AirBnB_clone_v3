@@ -11,7 +11,8 @@ from models.city import City
 from models.place import Place
 
 
-@app_views.route('/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
+@app_views.route('/cities/<city_id>/places', methods=['GET'],
+                 strict_slashes=False)
 def get_places(city_id):
     """Gets all Place objects in a City. Return objects in JSON."""
     city = storage.get(City, city_id)
@@ -30,7 +31,8 @@ def get_place(place_id):
     return jsonify(place.to_dict())
 
 
-@app_views.route('/places/<place_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/places/<place_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def del_place(place_id):
     """Removes Place obj from storage."""
     place = storage.get(Place, place_id)
@@ -41,7 +43,8 @@ def del_place(place_id):
     return jsonify({}), 200
 
 
-@app_views.route('/cities/<city_id>/places', methods=['POST'], strict_slashes=False)
+@app_views.route('/cities/<city_id>/places', methods=['POST'],
+                 strict_slashes=False)
 def create_place(city_id):
     """Creates new Place obj tied to City obj.
        Return JSON representation of new obj.
